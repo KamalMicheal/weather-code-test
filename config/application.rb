@@ -1,10 +1,17 @@
 require_relative "boot"
 
 require "rails/all"
+require 'dotenv'
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
+
+# loading .env.development.local and .env.test.local
+# for production, a proper secret management should be used
+if ["test", "development"].include? ENV["RAILS_ENV"]
+  Dotenv.load(".env.#{ENV["RAILS_ENV"]}.local")
+end
 
 module ZaiCodeTest
   class Application < Rails::Application
