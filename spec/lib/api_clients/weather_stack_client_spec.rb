@@ -4,9 +4,13 @@ require 'webmock/rspec'
 require 'api_clients/weather_stack_client'
 
 RSpec.describe WeatherStackClient do
-  let(:base_url)   { "#{ENV['WEATHER_STACK_BASE_URL']}/#{ENV['WEATHER_STACK_URL_PATH']}" }
-  let(:access_key) { ENV['WEATHER_STACK_API_KEY'] }
-  let(:units)      { ENV['WEATHER_STACK_UNITS'] }
+  let(:base_url)           { "#{ENV['WEATHER_STACK_BASE_URL']}/#{ENV['WEATHER_STACK_URL_PATH']}" }
+  let(:access_key)         { ENV['WEATHER_STACK_API_KEY'] }
+  let(:units)              { ENV['WEATHER_STACK_UNITS'] }
+  let(:default_location)   { 'Melbourne' }
+  let(:secondary_location) { 'Sydney' }
+  let(:wind_speed)         { 15 }
+  let(:temperature)        { 20 }
 
   let(:weather_stack_client) { WeatherStackClient.new }
 
@@ -38,10 +42,6 @@ RSpec.describe WeatherStackClient do
     end
 
     context('with successful response from WeatherStack') do
-      let(:default_location) { 'Melbourne' }
-      let(:wind_speed) { 15 }
-      let(:temperature) { 20 }
-
       let(:response_body) { { current: { wind_speed:, temperature: } }.to_json }
 
       before(:each) do
@@ -65,7 +65,6 @@ RSpec.describe WeatherStackClient do
     end
 
     context('with unsuccessful response from WeatherStack') do
-      let(:default_location) { 'Melbourne' }
       before(:each) do
         stub_request(:get, request_url)
           .to_return(status: 500)
@@ -77,8 +76,6 @@ RSpec.describe WeatherStackClient do
     end
 
     context('with invalid response body from WeatherStack') do
-      let(:default_location) { 'Melbourne' }
-
       let(:response_body) do
         {
           invalid: 'response'
@@ -100,10 +97,6 @@ RSpec.describe WeatherStackClient do
     end
 
     context('caches the response for 3 seconds for ths same location') do
-      let(:default_location) { 'Melbourne' }
-      let(:wind_speed) { 15 }
-      let(:temperature) { 20 }
-
       let(:response_body) { { current: { wind_speed:, temperature: } }.to_json }
 
       let(:freeze_time) { Time.utc(2024, 1, 30, 12, 20, 30) }
@@ -136,11 +129,6 @@ RSpec.describe WeatherStackClient do
     end
 
     context('caches the response for 3 seconds for ths same location') do
-      let(:default_location) { 'Melbourne' }
-      let(:secondary_location) { 'Sydney' }
-      let(:wind_speed) { 15 }
-      let(:temperature) { 20 }
-
       let(:response_body) { { current: { wind_speed:, temperature: } }.to_json }
 
       let(:freeze_time) { Time.utc(2024, 1, 30, 12, 20, 30) }
