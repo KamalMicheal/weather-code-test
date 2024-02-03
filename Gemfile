@@ -35,6 +35,8 @@ gem "bootsnap", require: false
 # using sqlite db
 gem "sqlite3"
 
+gem "faraday", "~> 2.9"
+
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[ mri windows ]
@@ -44,10 +46,7 @@ group :development, :test do
   gem 'dotenv', "~> 2.8.1"
 end
 
-group :development do
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem "spring"
+group :test do
+  gem "webmock"
+  gem "timecop", "~> 0.9.8"
 end
-
-
-gem "faraday", "~> 2.9"
