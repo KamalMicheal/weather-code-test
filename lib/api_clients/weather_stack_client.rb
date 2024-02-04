@@ -31,4 +31,8 @@ class WeatherStackClient < WeatherClient
   def base_url
     ENV['WEATHER_STACK_BASE_URL']
   end
+
+  def generate_cache_key(location:, **)
+    "#{provider_name}-#{location}"
+  end
 end

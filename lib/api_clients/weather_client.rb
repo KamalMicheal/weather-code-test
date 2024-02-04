@@ -6,7 +6,9 @@ class WeatherClient
   end
 
   def get_weather_details(location: nil, lon: nil, lat: nil)
-    Rails.cache.fetch("#{provider_name}-#{location}", expires_in: caching_expiry) do
+    cache_key = generate_cache_key(location:, lon:, lat:)
+
+    Rails.cache.fetch(cache_key, expires_in: caching_expiry) do
       weather_details_response = fetch_weather_details(location:, lon:, lat:)
 
       raise "unable to fetch data from #{provider_name}" unless weather_details_response.success?
@@ -48,5 +50,9 @@ class WeatherClient
 
   def caching_expiry
     3.seconds
+  end
+
+  def generate_cache_key(**)
+    raise 'Method not implemented'
   end
 end
