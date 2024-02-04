@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'services/weather_service'
 require 'api_clients/weather_client'
@@ -35,9 +37,9 @@ RSpec.describe WeatherService do
         end
 
         it 'returns a valid weather_details' do
-          expect {
+          expect do
             weather_service.get_weather_details(location:, lon:, lat:)
-          }.to raise_error(StandardError)
+          end.to raise_error(StandardError)
         end
       end
 
@@ -62,7 +64,8 @@ RSpec.describe WeatherService do
     context 'when the first client returns a valid response' do
       before do
         allow(weather_client_1).to receive(:get_weather_details).with(location:, lon:, lat:).and_return(weather_details)
-        allow(weather_client_2).to receive(:get_weather_details).with(location:, lon:, lat:).and_return(weather_details_2)
+        allow(weather_client_2).to receive(:get_weather_details).with(location:, lon:,
+                                                                      lat:).and_return(weather_details_2)
       end
 
       let(:subject) { weather_service.get_weather_details(location:, lon:, lat:) }
@@ -75,7 +78,8 @@ RSpec.describe WeatherService do
     context 'when the first client errors and the second returns a valid response' do
       before do
         allow(weather_client_1).to receive(:get_weather_details).with(location:, lon:, lat:).and_raise(StandardError)
-        allow(weather_client_2).to receive(:get_weather_details).with(location:, lon:, lat:).and_return(weather_details_2)
+        allow(weather_client_2).to receive(:get_weather_details).with(location:, lon:,
+                                                                      lat:).and_return(weather_details_2)
       end
 
       let(:subject) { weather_service.get_weather_details(location:, lon:, lat:) }
@@ -92,7 +96,8 @@ RSpec.describe WeatherService do
         end
 
         it 'loads from the existing cache' do
-          allow(weather_client_1).to receive(:get_weather_details).with(location:, lon:, lat:).and_return(weather_details)
+          allow(weather_client_1).to receive(:get_weather_details).with(location:, lon:,
+                                                                        lat:).and_return(weather_details)
           expect(weather_service.get_weather_details(location:, lon:, lat:)).to eq(weather_details)
 
           allow(weather_client_1).to receive(:get_weather_details).with(location:, lon:, lat:).and_raise(StandardError)
@@ -107,9 +112,9 @@ RSpec.describe WeatherService do
         end
 
         it 'returns a valid weather_details' do
-          expect {
+          expect do
             weather_service.get_weather_details(location:, lon:, lat:)
-          }.to raise_error(StandardError)
+          end.to raise_error(StandardError)
         end
       end
     end

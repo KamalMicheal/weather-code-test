@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 require 'webmock/rspec'
 
@@ -78,7 +80,10 @@ RSpec.describe OpenWeatherMapClient do
       end
 
       it('raises an exception') do
-        expect { open_weather_map_client.get_weather_details(lon: default_location[:lon], lat: default_location[:lat]) }.to raise_error(RuntimeError)
+        expect do
+          open_weather_map_client.get_weather_details(lon: default_location[:lon],
+                                                      lat: default_location[:lat])
+        end.to raise_error(RuntimeError)
       end
     end
 
@@ -99,9 +104,9 @@ RSpec.describe OpenWeatherMapClient do
       end
 
       it('raises an exception') do
-        expect {
+        expect do
           open_weather_map_client.get_weather_details(lon: default_location[:lon], lat: default_location[:lat])
-        }.to raise_error(NoMethodError)
+        end.to raise_error(NoMethodError)
       end
     end
 
