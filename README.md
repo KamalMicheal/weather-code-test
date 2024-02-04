@@ -47,6 +47,12 @@ bundle exec rails s
 Now, open this link in your browser to get the weather details in Melbourne
 http://127.0.0.1:3000/v1/weather?location=melbourne&lon=144.94&lat=-37.84
 
+Output should be similar to
+
+```json
+{"wind_speed":28,"temperature_degrees":32}
+```
+
 ### Query parameters
 | attribute | description |
 |-----------|-------------|
